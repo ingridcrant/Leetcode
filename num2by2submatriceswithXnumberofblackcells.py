@@ -53,16 +53,18 @@
 def solve(rows, cols, black):
     result = [0, 0, 0, 0, 0]
 
-    seenbits = set()
-    blackbits = set(((x, y) for [x, y] in black))
+    seenbits = set()    # seenbits stores the top left corners of submatrices we have seen
+    blackbits = set(((x, y) for [x, y] in black))   # convert blackbits from list to set for O(1) lookup
 
     for (x, y) in blackbits:
+        # current bit (x, y) can be either be the bottom right, top right, bottom left, or top left bit of the 2x2 submatrix
         for (topleftx, toplefty) in [(x - 1, y - 1), (x - 1, y), (x, y - 1), (x, y)]:
             if (topleftx, toplefty) in seenbits or topleftx < 0 or toplefty < 0 or topleftx >= rows - 1 or toplefty >= cols - 1:
                 continue
 
             seenbits.add((topleftx, toplefty))
 
+            # iterate through all 4 bits in the current 2x2 submatrix and count the black bits
             blackcount = 0
             for dx in range(2):
                 for dy in range(2):
@@ -71,6 +73,8 @@ def solve(rows, cols, black):
             
             result[blackcount] += 1
     
+    # there are (rows - 1) * (cols - 1) total 2x2 submatrices. The number of 0 black bit submatrices is:
+    #       total submatrices - 1 black bit submatrices - 2 black bit submatrices - 3 black bit submatrices - 4 black bit submatrices
     result[0] = (rows - 1) * (cols - 1) - sum(result[1:])
 
     return result
