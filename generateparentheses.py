@@ -7,7 +7,7 @@ Output: ["((()))","(()())","(())()","()(())","()()()"]
 """
 
 def generateParenthesis(n):
-    # dynammic programming approach
+    # dynamic programming approach
     dp = [['']] + [[] for _ in range(n)]
     for i in range(n + 1):
         for j in range(i):
